@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly xmlns:j="jelly:core">
+
+<j:new className="java.util.Date" var="now"/>
+    Current Date and Time: ${now}<br/>
+
+    <j:invoke on="${now}" method="getTime" var="timestamp"/>
+    Timestamp: ${timestamp} milliseconds<br/>
+
+
+<j:new className="java.text.SimpleDateFormat" var="formatter">
+    <j:arg value="yyyy-MM-dd HH:mm:ss"/>
+    </j:new>
+    <j:invoke on="${formatter}" method="format" var="formattedDate">
+      <j:arg value="${now}"/>
+    </j:invoke>
+    Formatted Date: ${formattedDate}<br/>
+
+
+
+     <j:invoke on="${formatter}" method="format" var="formattedDate2">
+      <j:arg value="${now}"/>
+    </j:invoke>
+    Formatted Date: ${formatter.format(now)}<br/>
+   
+
+
+<j:new className="java.text.SimpleDateFormat" var="formatterTime">
+    <j:arg value="HH:mm:ss"/>
+</j:new>
+<j:invoke on="${formatterTime}" method="format" var="formattedTime">
+    <j:arg value="${now}"/>
+</j:invoke>
+Current Time: ${formattedTime}<br/>
+
+
+
+
+ <j:new className="java.text.SimpleDateFormat" var="inputFormat">
+                <j:arg value="yyyy-MM-dd HH:mm:ss"/>
+            </j:new>
+
+           
+            <j:invoke on="${inputFormat}" method="parse" var="customDate">
+                <j:arg value="2023-12-25 15:30:00"/>
+            </j:invoke>
+
+             <j:new className="java.text.SimpleDateFormat" var="formatter">
+                <j:arg value="MMMM dd, yyyy HH:mm:ss"/>
+
+            <j:invoke on="${formatter}" method="format" var="formattedDate">
+                <j:arg value="${customDate}"/>
+            </j:invoke>
+</j:new>
+Formatted Custom Date: ${formattedDate}<br/>
+
+
+
+
+<j:getStatic var="pi" className="java.lang.Math" field="PI"/>
+<j:getStatic var="e" className="java.lang.Math" field="E"/>
+
+  PI value: ${pi}<br/>
+  E value: ${e}<br/>
+
+
+
+
+ <j:invokeStatic var="maxValue" className="java.lang.Math" method="max">
+      <j:arg value="10" type="int"/>
+      <j:arg value="20" type="int"/>
+
+   </j:invokeStatic>
+Maximum of 10 and 20: ${maxValue}<br/>
+
+
+
+<j:new className="java.util.Random" var="random"/>
+<j:invoke on="${random}" method="nextInt" var="n">
+  <j:arg type="int" value="100"/>
+</j:invoke>
+Random number between 0 and 99: ${n}<br/>
+
+
+
+<j:invokeStatic var="rounded" className="java.lang.Math" method="round">
+<j:arg value="3.14" type="double"/>
+</j:invokeStatic>
+Rounded value of 3.14: ${rounded}<br/>
+</j:jelly>
+
+
+
+
+
+

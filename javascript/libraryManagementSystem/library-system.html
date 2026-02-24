@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library</title>
+  </head>
+  <body>
+    <script>
+      let library = [];
+
+      function addBook() {
+        let title = prompt("Book title:");
+        if (title === null || title === "") {
+          alert("Title cannot be empty");
+          return;
+        }
+
+        let author = prompt("Author name:");
+        if (author === null || author === "") {
+          alert("Author cannot be empty");
+          return;
+        }
+
+        let copies = Number(prompt("Number of copies (>0):"));
+        if (!Number.isFinite(copies) || copies <= 0) {
+          alert("Invalid copies");
+          return;
+        }
+
+        let found = false;
+        for (let i = 0; i < library.length; i++) {
+          if (library[i].title.toLowerCase() === title.toLowerCase()) {
+            library[i].available += copies;
+            found = true;
+            alert("Book already exists. Copies increased!");
+            break;
+          }
+        }
+
+        if (found === false) {
+          library.push({
+            title: title,
+            author: author,
+            available: copies,
+            borrowed: 0,
+          });
+          alert("Book added successfully!");
+        }
+      }
+
+      function borrowBook() {
+        let title = prompt("Enter book title to borrow:");
+        if (title === null || title === "") return;
+
+        let found = false;
+
+        for (let i = 0; i < library.length; i++) {
+          if (library[i].title.toLowerCase() === title.toLowerCase()) {
+            found = true;
+
+            if (library[i].available > 0) {
+              library[i].available--;
+              library[i].borrowed++;
+              alert("Book borrowed successfully!");
+            } else {
+              alert("No available copies!");
+            }
+            break;
+          }
+        }
+
+        if (found === false) alert("Book not found!");
+      }
+
+      function returnBook() {
+        let title = prompt("Enter book title to return:");
+        if (title === null || title === "") return;
+
+        let found = false;
+
+        for (let i = 0; i < library.length; i++) {
+          if (library[i].title.toLowerCase() === title.toLowerCase()) {
+            found = true;
+
+            if (library[i].borrowed > 0) {
+              library[i].borrowed--;
+              library[i].available++;
+              alert("Book returned successfully!");
+            } else {
+              alert("This book has no borrowed copies!");
+            }
+            break;
+          }
+        }
+
+        if (found === false) alert("Book not found!");
+      }
+
+      function showReport() {
+        if (library.length === 0) {
+          alert("Library is empty");
+          return;
+        }
+
+        let text = "Library Report\n\n";
+        let totalAvailable = 0;
+        let totalBorrowed = 0;
+
+        for (let i = 0; i < library.length; i++) {
+          text += "Title: " + library[i].title + "\n";
+          text += "Author: " + library[i].author + "\n";
+          text += "Available: " + library[i].available + "\n";
+          text += "Borrowed: " + library[i].borrowed + "\n\n";
+
+          totalAvailable += library[i].available;
+          totalBorrowed += library[i].borrowed;
+        }
+
+        text += "Total Available: " + totalAvailable + "\n";
+        text += "Total Borrowed: " + totalBorrowed + "\n";
+
+        alert(text);
+      }
+
+      while (true) {
+        let choice = prompt(
+          "1) Add New Book\n" +
+            "2) Borrow Book\n" +
+            "3) Return Book\n" +
+            "4) Show Library Report\n" +
+            "5) Exit",
+        );
+
+        if (choice === null) break;
+
+        switch (choice) {
+          case "1":
+            addBook();
+            break;
+          case "2":
+            borrowBook();
+            break;
+          case "3":
+            returnBook();
+            break;
+          case "4":
+            showReport();
+            break;
+          case "5":
+            alert("Goodbye!");
+            break;
+          default:
+            alert("Invalid choice (1-5)");
+        }
+
+        if (choice === "5") break;
+      }
+    </script>
+  </body>
+</html>

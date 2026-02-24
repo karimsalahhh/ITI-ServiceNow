@@ -1,0 +1,68 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+
+<script>
+  function getData() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve("data loaded"), 5000);
+    });
+  }
+  getData().then((result) => console.log(result));
+</script>
+ -->
+
+<!-- <script>
+  function getUser(id) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (id < 1) {
+          reject("User NOt found");
+        } else {
+          resolve({ id: id, name: Ahmed });
+        }
+      }, 2000);
+    });
+  }
+  getUser(1)
+    .then((user) => console.log("user:", user))
+    .catch((err) => console.log(err));
+</script>
+ -->
+
+<script>
+  function getUser(id) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (id < 1) {
+          reject("User NOt found");
+        } else {
+          resolve({ id: id, name: "Ahmed" });
+        }
+      }, 2000);
+    });
+  }
+  function getUser2(id) {
+    if (id < 1) {
+      console.log("user not found");
+    } else {
+      console.log(id + "Ahmed");
+    }
+  }
+  async function displayUser() {
+    try {
+      /* const user = await getUser(1); */
+      const user = await getUser2(1);
+      console.log("User", user);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  displayUser();
+</script>

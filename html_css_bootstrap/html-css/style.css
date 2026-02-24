@@ -1,0 +1,175 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f7fb; /* light background */
+  color: #111;
+}
+
+.site-header {
+  background: blue;
+}
+
+.navbar {
+  width: 90%;
+  margin: 0 auto;
+  padding: 14px 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.brand {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+}
+
+.brand span {
+  color: #ff6b6b; /* coral accent */
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 18px;
+  margin-right: auto; /* ✅ push links to the right */
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.nav-links a.active {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  width: 90%;
+  margin: 18px auto;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: white;
+}
+
+.hero-img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  display: block;
+}
+
+/* overlay */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 20, 40, 0.35); /* navy-ish overlay */
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 1;
+  width: 90%;
+  max-width: 700px;
+}
+
+.hero-content h1 {
+  margin: 0 0 10px;
+  font-size: 34px;
+}
+
+.hero-content p {
+  margin: 0 0 16px;
+  font-size: 16px;
+}
+
+.btn {
+  display: inline-block;
+  background: #ff6b6b; /* coral button */
+  color: white;
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+}
+
+/* ---------- CATEGORIES ---------- */
+.section {
+  width: 90%;
+  margin: 26px auto 40px;
+}
+
+.section-title {
+  text-align: center;
+  margin: 0 0 16px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 200px;
+  background: white;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+}
+
+.card-icon {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  margin: 6px 0 6px;
+}
+
+.card p {
+  margin: 0;
+  color: #555;
+}
+
+.breadcrumbs {
+  width: 90%;
+  margin: 14px auto 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.breadcrumbs a {
+  color: #666;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs span {
+  margin: 0 6px;
+}
+

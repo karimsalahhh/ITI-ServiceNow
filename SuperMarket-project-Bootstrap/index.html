@@ -1,0 +1,89 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KimoCono | Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" />
+  </head>
+  <body class="page-home d-flex flex-column min-vh-100">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+          <a class="navbar-brand fw-bold" href="index.html">Kimo<span>Cono</span></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto gap-lg-2">
+              <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+              <li class="nav-item"><a class="nav-link" href="bakery.html">Bakery</a></li>
+              <li class="nav-item"><a class="nav-link" href="dairy.html">Dairy</a></li>
+              <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+              <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
+              <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-grow-1">
+      <section class="container home-hero">
+        <div class="position-relative rounded-4 overflow-hidden shadow-sm">
+          <img class="hero-img w-100" src="images/fresh-foods.jpg" alt="Fresh foods" />
+          <div class="hero-overlay position-absolute text-center text-white px-3">
+            <h1 class="display-6 fw-bold">Freshness Delivered To Your Door</h1>
+            <p class="lead mb-3">Shop over 5,000 items from our local store.</p>
+            <a class="btn btn-danger px-4" href="shop.html">Shop Now</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="container home-categories pb-5">
+        <h2 class="text-center mb-4 categories-title">Shop By Category</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card category-card h-100 text-center shadow-sm">
+              <div class="card-body">
+                <img src="images/produce-logo.png" alt="Fresh Produce" width="92" height="92" class="mb-3" />
+                <h3 class="h5">Fresh Produce</h3>
+                <p class="text-secondary">Fruits and vegetables</p>
+                <a href="shop.html" class="btn btn-outline-primary">View Aisle</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card category-card h-100 text-center shadow-sm">
+              <div class="card-body">
+                <img src="images/bakery-logo.png" alt="Bakery" width="92" height="92" class="mb-3" />
+                <h3 class="h5">Bakery</h3>
+                <p class="text-secondary">Bread and pastries</p>
+                <a href="bakery.html" class="btn btn-outline-primary">View Aisle</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card category-card h-100 text-center shadow-sm">
+              <div class="card-body">
+                <img src="images/dairy-logo.png" alt="Dairy and Eggs" width="92" height="92" class="mb-3" />
+                <h3 class="h5">Dairy and Cold Fridge</h3>
+                <p class="text-secondary">Milk, cheese, eggs</p>
+                <a href="dairy.html" class="btn btn-outline-primary">View Aisle</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="text-light text-center py-3 mt-auto">© 2026 KimoCono Market</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+
+
+

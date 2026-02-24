@@ -1,0 +1,17 @@
+<script>
+  /*   localStorage.setItem("username", "your name");
+  localStorage.setItem("sadad", "dfdfdd");
+  console.log(localStorage.getItem("username"));
+  localStorage.removeItem("username");
+  localStorage.clear(); */
+
+  let user = {
+    name: "ffff",
+    id: "222",
+  };
+  localStorage.setItem("userdata", JSON.stringify(user));
+  let data = localStorage.getItem("userdata");
+  data = JSON.parse(data);
+  console.log(data.name);
+  
+</script>

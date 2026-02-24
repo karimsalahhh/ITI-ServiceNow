@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly xmlns:j="jelly:core">
+ <j:set var="name" value="Karim">
+ <j:set var="names" value="Karim,sandy,mostafa">
+ </j:set>
+ <j:forEach var="name" items="${names}">
+    <p>${name}</p>
+ </j:forEach>
+
+</j:jelly>
+
+
+

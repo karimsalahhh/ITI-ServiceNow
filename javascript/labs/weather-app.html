@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fake Weather App</title>
+  </head>
+  <body>
+    <h1>Fake Weather App</h1>
+
+    <input type="text" id="myInput" placeholder="Enter City..." />
+    <button onclick="checkWeather()">Check weather</button>
+    <script>
+      function check(city) {
+        return new Promise((resolve, reject) =>
+          setTimeout(() => {
+            if (city === "paris") {
+              resolve("25C*");
+            } else {
+              reject("city not found");
+            }
+          }, 2000),
+        );
+      }
+
+      async function checkWeather() {
+        try {
+          const city = document.getElementById("myInput").value;
+          console.log(city);
+          const ct = await check(city);
+          alert("the weather is" + ct);
+        } catch (err) {
+          alert(err);
+        }
+      }
+    </script>
+  </body>
+</html>

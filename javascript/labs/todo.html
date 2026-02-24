@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo</title>
+  </head>
+  <body>
+    <ul>
+      <li><input id="taskInput" type="text" /></li>
+      <li><button id="addBtn">add task</button></li>
+      <li>counter: <span id="counter">0</span></li>
+      <li><button id="removeBtn">remove</button></li>
+    </ul>
+
+    <ul id="tasks"></ul>
+
+    <script>
+      let taskInput = document.getElementById("taskInput");
+      let addBtn = document.getElementById("addBtn");
+      let removeBtn = document.getElementById("removeBtn");
+      let counter = document.getElementById("counter");
+      let tasks = document.getElementById("tasks");
+
+      addBtn.addEventListener("click", function () {
+        let text = taskInput.value;
+
+        if (text === "") {
+          alert("enter a task");
+          return;
+        }
+
+        let li = document.createElement("li");
+        li.textContent = text;
+        tasks.appendChild(li);
+
+        taskInput.value = "";
+        counter.textContent = tasks.children.length;
+      });
+
+      removeBtn.addEventListener("click", function () {
+        if (tasks.children.length === 0) {
+          alert("no tasks");
+          return;
+        }
+
+        tasks.lastElementChild.remove();
+        counter.textContent = tasks.children.length;
+      });
+    </script>
+  </body>
+</html>

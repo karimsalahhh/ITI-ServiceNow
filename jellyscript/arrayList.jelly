@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly xmlns:j="jelly:core" trim="false">
+
+<j:new className="java.util.ArrayList" var="names"/>
+<j:invoke on="${names}" method="add">
+ <j:arg value="Alice"/>
+</j:invoke>
+<j:invoke on="${names}" method="add">
+<j:arg value="Bob"/>
+
+</j:invoke>
+<j:invoke on="${names}" method="add">
+
+<j:arg value="Charlie"/> 
+</j:invoke>
+
+<html>
+<head>
+   <title>ArrayList Example</title>
+   <style>
+      table {
+         width: 50%;
+         border-collapse: collapse;
+      }
+      th, td {
+         border: 1px solid black;
+         padding: 8px;
+         text-align: center;
+      }
+      th {
+         background-color: lightgray;
+      }
+   </style>
+</head>
+<body> 
+   <table border="1">
+         <tr>
+            <th>Name</th>
+         </tr>
+      <tb>
+         <j:forEach var="name" items="${names}">
+            <tr>
+               <td>${name}</td>
+            </tr>
+         </j:forEach>
+      </tb>
+   </table>
+</body>
+</html>
+
+
+</j:jelly>
+
+
+

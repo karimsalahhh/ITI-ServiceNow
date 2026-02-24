@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly xmlns:j="jelly:core">
+<j:set var="name" value="Karim">
+</j:set>
+<j:choose>
+ <j:when test="${name eq 'Karim'}">
+   <p>Welcome, Karim!</p>
+ </j:when>
+ <j:when test="${name eq 'Sandy'}">
+  <p>Welcome Sandy!</p>
+ </j:when>
+ <j:otherwise>
+  <p>Welcome,${name}!</p>
+ </j:otherwise>
+ </j:choose>
+</j:jelly>
+
+
+

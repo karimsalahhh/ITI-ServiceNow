@@ -1,0 +1,196 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <ul>
+            <li><input type="text"></li>
+            <li><button id="button">add task</button></li>
+            <li>counter: <span id="counter">0</span></li>
+            <li><button id="button">remove</button></li>
+        </ul>
+    </div>
+</body>
+</html>
+<script>
+    document.addEventListener("DOMContentLoaded",function(){
+        const button = document.getElementById("button");
+        button.addEventListener("click",function() {
+        
+        })
+    })
+</script> -->
+
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  try {
+    alert("try");
+    if (confirm("make an error?")) bad_code();
+  } catch (err) {
+    alert("catch");
+  } finally {
+    alert("finally");
+  }
+</script>
+ -->
+
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  function divide(a, b) {
+    try {
+      if (b == 0) {
+        throw new error("Division by zero is not allowed");
+      }
+      const result = a / b;
+      console.log(`the result is: ${result}`);
+      return result;
+    } catch (error) {
+      console.error(`an error occured: ${error.message}`);
+    } finally {
+      console.log("division attempt complete");
+    }
+  }
+
+  divide(10, 2);
+  divide(10, 0);
+</script> -->
+<!-- 
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  function check_password(password) {
+    try {
+      if (password.length < 8) {
+        throw new Error("must be more than 8 characters");
+      }
+      alert(error.message);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+</script> -->
+
+<!-- <script>
+  const globVar = "Im global";
+  function exampleScope() {
+    var funtionVar = "im local to function";
+    console.log(globVar);
+    if (true) {
+      let blockVar = "im only in this block";
+      console.log(funtionVar);
+      console.log(blockVar);
+    }
+    console.log(blockVar);
+  }
+  exampleScope();
+  console.log(funtionVar);
+</script>
+ -->
+
+<!-- <script>
+  function bankAccount() {
+    let balance = 500;
+
+    function withdraw(amount) {
+      balance -= amount;
+      console.log("new balance:", balance);
+    }
+    return withdraw;
+  }
+
+  const atm = bankAccount();
+  atm(100);
+  atm(50);
+</script> -->
+
+<!-- <script>
+  let x = 1;
+  function levelOne() {
+    let x = 2;
+    function levelTwo() {
+      let x = 3;
+      function levelThree() {
+        console.log(x);
+      }
+      return levelThree;
+    }
+    return levelTwo;
+  }
+
+  const result = levelOne();
+  const final = result();
+  final();
+</script>
+ -->
+<!-- 
+
+ <script>
+  function makeFunctions() {
+    let arr = [];
+
+    for (var i = 0; i < 3; i++) {
+      arr.push(function () {
+        console.log(i);
+      });
+    }
+
+    return arr;
+  }
+
+  const funcs = makeFunctions();
+  funcs[0]();
+  funcs[1]();
+  funcs[2]();
+</script> -->
+
+
+<!-- 
+<script>
+  function secretMessage() {
+    let secret = "This is a secret message";
+
+    return {
+      show: function () {
+        console.log(secret);
+      },
+      change: function (newMsg) {
+        secret = newMsg;
+      }
+    };
+  }
+
+  const box = secretBox();
+
+  box.show();         
+  box.change("Hello!");
+  box.show();        
+</script> -->
+
+
