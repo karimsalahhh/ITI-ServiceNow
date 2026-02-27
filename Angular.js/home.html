@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login Form</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f2f4f7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .form-container {
+        background: white;
+        padding: 30px;
+        width: 320px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        box-sizing: border-box;
+      }
+
+      input:focus {
+        border-color: #4a90e2;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        background: grey;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .message {
+        margin-top: 15px;
+        font-weight: bold;
+      }
+
+      .success {
+        color: green;
+      }
+
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body ng-app="myApp" ng-controller="myCtrl">
+    <div class="form-container">
+      <h2>Login</h2>
+
+      <form name="loginForm" ng-submit="customShow()" novalidate>
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          ng-model="email"
+          placeholder="Enter your email"
+          required
+        />
+
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          ng-model="password"
+          placeholder="Enter your password"
+          required
+        />
+
+        <label>
+          <input type="checkbox" ng-model="showMessage" />
+          Show extra message
+        </label>
+
+        <button type="submit" ng-disabled="loginForm.$invalid">Submit</button>
+      </form>
+
+      <!-- Result Section -->
+      <div
+        class="message"
+        ng-class="{'success': isSuccess, 'error': !isSuccess}"
+        ng-if="result"
+      >
+        {{ result }}
+      </div>
+
+      <div ng-if="isSuccess && showMessage">Message inserted successfully</div>
+    </div>
+
+    <script>
+      var app = angular.module("myApp", []);
+
+      app.controller("myCtrl", function ($scope) {
+        var correctEmail = "admin@gmail.com";
+        var correctPassword = "123456";
+
+        $scope.status = "";
+        $scope.isLogged = false;
+
+        $scope.checkLogin = function () {
+          $scope.savedEmail = $scope.email;
+
+          if (
+            $scope.email === correctEmail &&
+            $scope.password === correctPassword
+          ) {
+            $scope.isLogged = true;
+            $scope.status = "Login successfully";
+          } else {
+            $scope.isLogged = false;
+            $scope.status = "Wrong email or password";
+          }
+        };
+      });
+    </script>
+  </body>
+</html>

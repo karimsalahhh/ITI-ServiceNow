@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly xmlns:j="jelly:core" trim="false">
+ <j:new className="com.example.SimpleFunction" var="karim" />
+ ${karim.hello("Karim")}
+
+</j:jelly>

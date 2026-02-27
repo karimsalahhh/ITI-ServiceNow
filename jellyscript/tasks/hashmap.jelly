@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly xmlns:j="jelly:core" trim="false">
+<j:new className="java.util.ArrayList" var="people"/>
+<j:new className="java.util.HashMap" var="user"/>
+
+ 
+ <j:invoke on="${user}" method="put" >
+    <j:arg value="name" />
+    <j:arg value="John Doe" />
+  </j:invoke>
+ 
+ <j:invoke on="${user}" method="put" >
+    <j:arg value="age" />
+    <j:arg value="30" />
+  </j:invoke> 
+
+ <j:invoke on="${user}" method="put" >
+    <j:arg value="city" />
+    <j:arg value="New York" />
+  </j:invoke>
+
+
+<j:invoke on="${people}" method="add">
+    <j:arg value="${user}" />
+</j:invoke>
+
+
+
+
+<j:new className="java.util.HashMap" var="user2"/>
+
+ 
+ <j:invoke on="${user2}" method="put" >
+    <j:arg value="name" />
+    <j:arg value="Jane Smith" />
+  </j:invoke>
+ 
+ <j:invoke on="${user2}" method="put" >
+    <j:arg value="age" />
+    <j:arg value="25" />
+  </j:invoke> 
+
+ <j:invoke on="${user2}" method="put" >
+    <j:arg value="city" />
+    <j:arg value="Los Angeles" />
+  </j:invoke>
+
+
+<j:invoke on="${people}" method="add">
+    <j:arg value="${user2}" />
+</j:invoke>
+
+
+
+
+
+<j:foreach var="user" items="${people}">
+ 
+<j:invoke on="${user}" method="get" var="userName">
+    <j:arg value="name" />
+</j:invoke>
+
+<j:invoke on="${user}" method="get" var="userAge">
+    <j:arg value="age" />
+</j:invoke>
+
+<j:invoke on="${user}" method="get" var="userCity">
+    <j:arg value="city" />
+</j:invoke>
+Name: ${userName}<br/>
+Age: ${userAge} <br/>
+City: ${userCity}
+
+</j:foreach>
+
+
+
+
+
+</j:jelly>
