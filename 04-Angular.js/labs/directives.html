@@ -1,0 +1,61 @@
+<!-- <!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Directives</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body ng-controller="mainCtrl">
+    <my-message></my-message>
+    <script>
+      var app = angular.module("myApp", []);
+
+      app.directive("myMessage", function () {
+        return {
+          template: "<h2>Hello, Welcome to anularjs</h2>",
+        };
+      });
+    </script>
+  </body>
+</html>
+ -->
+
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Directives</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container py-5" ng-app="myApp" ng-controller="myCtrl">
+      <h2 class="text-center mb-5">Our Products</h2>
+      <div class="row g-4" ng-repeat="product in products">
+        <card title="{{product.title}}" price="{{product.price}}"></card>
+      </div>
+    </div>
+    <script>
+      var app = angular.module("myApp", []);
+      app.controller("myCtrl", function ($scope) {
+        [
+          { title: "mouse", price: 100 },
+          { title: "keyboard", price: 200 },
+        ];
+      });
+        
+    </script>
+  </body>
+</html>
+

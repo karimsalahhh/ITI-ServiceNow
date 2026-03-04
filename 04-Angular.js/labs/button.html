@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  </head>
+
+  <body>
+    <div ng-app="firstView" ng-controller="firstCtrl">
+      <counter countt="count"></counter>
+    </div>
+  </body>
+
+  <script>
+    var app = angular.module("firstView", []);
+    app.controller("firstCtrl", function ($scope) {
+      $scope.count = 0;
+    });
+    app.directive("counter", function () {
+      return {
+        scope: {
+          countt: "=",
+        },
+        template: `
+              <button ng-click="Decrement()">-1</button>
+              Count: {{countt}}
+            <button ng-click="Increment()">+1</button>
+            `,
+        link: function (scope) {
+          scope.Increment = function () {
+            scope.countt = scope.countt + 1;
+          };
+          scope.Decrement = function () {
+            scope.countt = scope.countt - 1;
+          };
+        },
+      };
+    });
+  </script>
+</html>
+
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  </head>
+
+  <body>
+    <div ng-app="firstView" ng-controller="firstCtrl">
+      <counter countt="count"></counter>
+    </div>
+  </body>
+
+  <script>
+    var app = angular.module("firstView", []);
+    app.controller("firstCtrl", function ($scope) {
+      $scope.count = 0;
+    });
+    app.directive("counter", function () {
+      return {
+        scope: {
+          countt: "=",
+        },
+        template: `
+              <button ng-click="countt = countt - 1">-1</button>
+              Count: {{countt}}
+            <button ng-click="countt = countt + 1">+1</button>
+            `,
+      };
+    });
+  </script>
+</html> -->

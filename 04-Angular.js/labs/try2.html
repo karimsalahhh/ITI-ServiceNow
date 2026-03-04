@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="UTF-8" />
+  <title>Students</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .box { max-width: 420px; border: 1px solid #ddd; padding: 14px; border-radius: 8px; }
+    h3 { margin: 0 0 12px; }
+    input { width: 100%; padding: 10px; box-sizing: border-box; margin-bottom: 10px; }
+    button { padding: 8px 10px; cursor: pointer; }
+    .add { width: 100%; margin-bottom: 10px; }
+    .msg { color: #666; font-size: 14px; margin: 8px 0; }
+    ul { padding-left: 18px; margin: 0; }
+    li { margin: 6px 0; display: flex; justify-content: space-between; align-items: center; }
+    .del { background: #eee; border: 1px solid #ccc; }
+    button:disabled { cursor: not-allowed; opacity: 0.6; }
+  </style>
+</head>
+
+<body ng-controller="c">
+  <div class="box">
+    <h3>Student List</h3>
+
+    <input type="text" ng-model="text" placeholder="Write a name" />
+
+    <button class="add" ng-click="add()" ng-disabled="!text || text.trim().length == 0">
+      Add Student
+    </button>
+
+    <div class="msg" ng-show="list.length == 0">No students added yet.</div>
+
+    <ul ng-show="list.length > 0">
+      <li ng-repeat="x in list">
+        <span>{{x}}</span>
+        <button class="del" ng-click="del($index)">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    var app = angular.module("app", []);
+
+    app.controller("c", function ($scope) {
+      $scope.list = [];
+      $scope.text = "";
+
+      $scope.add = function () {
+        if (!$scope.text || $scope.text.trim().length == 0) return;
+
+        $scope.list.push($scope.text.trim());
+        $scope.text = "";
+      };
+
+      $scope.del = function (i) {
+        $scope.list.splice(i, 1);
+      };
+    });
+  </script>
+</body>
+</html>

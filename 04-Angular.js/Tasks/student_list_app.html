@@ -1,0 +1,82 @@
+<!doctype html>
+<html ng-app="studentApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student List</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body ng-controller="mainCtrl" class="bg-light py-5">
+    <div class="container" style="max-width: 600px">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="mb-3">Student List</h4>
+
+          <input
+            type="text"
+            class="form-control mb-2"
+            ng-model="newStudent"
+            placeholder="Enter student name"
+          />
+
+          <button
+            class="btn btn-dark w-100"
+            ng-click="addStudent()"
+            ng-disabled="isInvalid()"
+          >
+            Add Student
+          </button>
+
+          <p class="text-muted mt-3 mb-0" ng-show="students.length === 0">
+            No students added
+          </p>
+
+          <ul class="list-group mt-3" ng-show="students.length > 0">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              ng-repeat="s in students"
+            >
+              {{s}}
+              <button
+                class="btn btn-outline-danger btn-sm"
+                ng-click="removeStudent($index)"
+              >
+                Delete
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var app = angular.module("studentApp", []);
+
+      app.controller("mainCtrl", function ($scope) {
+        $scope.students = [];
+        $scope.newStudent = "";
+
+        $scope.isInvalid = function () {
+          return !$scope.newStudent || $scope.newStudent.trim().length === 0;
+        };
+
+        $scope.addStudent = function () {
+          if ($scope.isInvalid()) return;
+
+          $scope.students.push($scope.newStudent.trim());
+          $scope.newStudent = "";
+        };
+
+        $scope.removeStudent = function (index) {
+          $scope.students.splice(index, 1);
+        };
+      });
+    </script>
+  </body>
+</html>

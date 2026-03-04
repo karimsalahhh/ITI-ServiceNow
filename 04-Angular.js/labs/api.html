@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users Management CRUD</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        background: #f5f5f5;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="UserController" class="bg-light">
+    <div class="container py-5" style="max-width: 900px">
+      <h2 class="text-center mb-4">Users Management</h2>
+
+      <!-- ERROR MESSAGE (UI) -->
+      <div class="alert alert-danger" ng-if="errorMsg">
+        {{ errorMsg }}
+      </div>
+
+      <!-- FORM CARD -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header fw-semibold">
+          {{ isEdit ? 'Edit User' : 'Add New User' }}
+        </div>
+
+        <div class="card-body">
+          <form
+            name="userForm"
+            ng-submit="userForm.$valid && (isEdit ? updateUser() : addUser())"
+            novalidate
+          >
+            <div class="row g-3 align-items-end">
+              <!-- NAME -->
+              <div class="col-md-4">
+                <label class="form-label">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  ng-model="newUser.name"
+                  required
+                  minlength="3"
+                  ng-class="{
+                    'is-invalid': userForm.name.$touched && userForm.name.$invalid,
+                    'is-valid': userForm.name.$touched && userForm.name.$valid
+                  }"
+                />
+                <div
+                  class="invalid-feedback d-block"
+                  ng-if="userForm.name.$touched && userForm.name.$error.required"
+                >
+                  Name is required
+                </div>
+                <div
+                  class="invalid-feedback d-block"
+                  ng-if="userForm.name.$touched && userForm.name.$error.minlength"
+                >
+                  Minimum 3 characters required
+                </div>
+              </div>
+
+              <!-- EMAIL -->
+              <div class="col-md-4">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  class="form-control"
+                  ng-model="newUser.email"
+                  required
+                  ng-class="{
+                    'is-invalid': userForm.email.$touched && userForm.email.$invalid,
+                    'is-valid': userForm.email.$touched && userForm.email.$valid
+                  }"
+                />
+                <div
+                  class="invalid-feedback d-block"
+                  ng-if="userForm.email.$touched && userForm.email.$error.required"
+                >
+                  Email is required
+                </div>
+                <div
+                  class="invalid-feedback d-block"
+                  ng-if="userForm.email.$touched && userForm.email.$error.email"
+                >
+                  Invalid email format
+                </div>
+              </div>
+
+              <!-- BUTTONS -->
+              <div class="col-md-4 d-flex gap-2">
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  ng-disabled="userForm.$invalid || loading"
+                >
+                  {{ isEdit ? 'Update' : 'Add' }}
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  ng-if="isEdit"
+                  ng-click="cancelEdit()"
+                  ng-disabled="loading"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- LOADING -->
+      <div class="text-center py-3" ng-if="loading">
+        <div class="spinner-border" role="status" aria-label="Loading"></div>
+        <div class="mt-2">Loading users...</div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="card shadow-sm" ng-if="!loading">
+        <div class="card-header fw-semibold">User List</div>
+
+        <div class="table-responsive">
+          <table class="table table-hover table-striped mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th style="width: 90px">ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th style="width: 160px">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr ng-repeat="user in users track by user.id">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td class="d-flex gap-2">
+                  <button
+                    class="btn btn-warning btn-sm"
+                    ng-click="editUser(user)"
+                    ng-disabled="loading"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    class="btn btn-danger btn-sm"
+                    ng-click="deleteUser(user.id)"
+                    ng-disabled="loading"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+
+              <tr ng-if="users.length === 0">
+                <td colspan="4" class="text-center text-muted py-4">
+                  No users found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      angular
+        .module("myApp", [])
+        .service("UserService", function ($http) {
+          const apiLink =
+            "https://xrslatldfiyfpszgmptb.supabase.co/rest/v1/users";
+          const apiKey = "sb_publishable_NE7gABdzJPAkrW00Aa7cJw_q4TI69h2";
+
+          const config = {
+            headers: {
+              apikey: apiKey,
+              Authorization: "Bearer " + apiKey,
+              "Content-Type": "application/json",
+            },
+          };
+
+          // GET all users
+          this.getUsers = function () {
+            return $http.get(apiLink, config);
+          };
+
+          // POST new user
+          this.createUser = function (user) {
+            return $http.post(apiLink, user, config);
+          };
+
+          // PUT update user (task asks PUT)
+          this.updateUser = function (user) {
+            return $http.put(apiLink + "?id=eq." + user.id, user, config);
+          };
+
+          // DELETE user
+          this.deleteUser = function (id) {
+            return $http.delete(apiLink + "?id=eq." + id, config);
+          };
+        })
+        .controller("UserController", function ($scope, UserService) {
+          $scope.users = [];
+          $scope.newUser = {};
+          $scope.isEdit = false;
+          $scope.loading = false;
+          $scope.errorMsg = "";
+
+          function setError(msg, errorObj) {
+            // optional: try to pull server message if available
+            var serverMsg =
+              errorObj &&
+              errorObj.data &&
+              (errorObj.data.message || errorObj.data.error_description);
+            $scope.errorMsg = serverMsg || msg;
+          }
+
+          $scope.loadUsers = function () {
+            $scope.loading = true;
+            $scope.errorMsg = "";
+
+            UserService.getUsers()
+              .then(function (response) {
+                $scope.users = response.data;
+              })
+              .catch(function (error) {
+                setError("Error loading users. Please try again.", error);
+              })
+              .finally(function () {
+                $scope.loading = false;
+              });
+          };
+
+          $scope.loadUsers();
+
+          $scope.addUser = function () {
+            $scope.errorMsg = "";
+
+            UserService.createUser($scope.newUser)
+              .then(function () {
+                $scope.newUser = {};
+                $scope.loadUsers();
+              })
+              .catch(function (error) {
+                setError("Error creating user.", error);
+              });
+          };
+
+          $scope.editUser = function (user) {
+            $scope.isEdit = true;
+            $scope.errorMsg = "";
+            $scope.newUser = angular.copy(user);
+          };
+
+          $scope.updateUser = function () {
+            $scope.errorMsg = "";
+
+            UserService.updateUser($scope.newUser)
+              .then(function () {
+                $scope.newUser = {};
+                $scope.isEdit = false;
+                $scope.loadUsers();
+              })
+              .catch(function (error) {
+                setError("Error updating user.", error);
+              });
+          };
+
+          $scope.deleteUser = function (id) {
+            $scope.errorMsg = "";
+
+            if (!confirm("Are you sure?")) return;
+
+            UserService.deleteUser(id)
+              .then(function () {
+                $scope.loadUsers();
+              })
+              .catch(function (error) {
+                setError("Error deleting user.", error);
+              });
+          };
+
+          $scope.cancelEdit = function () {
+            $scope.isEdit = false;
+            $scope.newUser = {};
+            $scope.errorMsg = "";
+          };
+        });
+    </script>
+  </body>
+</html>

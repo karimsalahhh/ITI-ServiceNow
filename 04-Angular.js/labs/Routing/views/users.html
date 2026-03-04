@@ -1,0 +1,51 @@
+<section class="mb-4">
+  <div class="p-4 p-md-5 bg-white border rounded-3 shadow-sm">
+    <h1 class="h3 mb-2">Users Directory</h1>
+    <p class="text-muted mb-0">
+      Browse all users from Supabase and click any user to view full details.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0">All Users</h2>
+        <span class="badge text-bg-success">{{ users.length }} users</span>
+      </div>
+
+      <div ng-if="isLoading" class="text-muted">Loading users...</div>
+      <div ng-if="errorMessage" class="alert alert-danger mb-0">
+        {{ errorMessage }}
+      </div>
+
+      <div class="table-responsive" ng-if="!isLoading && !errorMessage">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="user in users track by user.id">
+              <td>{{ user.id }}</td>
+              <td>{{ user.name || user.username || '-' }}</td>
+              <td>{{ user.email || '-' }}</td>
+              <td class="text-end">
+                <a
+                  class="btn btn-sm btn-outline-success"
+                  href="#!/userdetail/{{ user.id }}"
+                  >View Details</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,43 @@
+<section class="mb-3">
+  <a href="#!/users" class="btn btn-link ps-0 text-decoration-none"
+    >&larr; Back to users</a
+  >
+</section>
+
+<section class="card border-0 shadow-sm">
+  <div class="card-body p-4">
+    <h1 class="h4 mb-3">User Details</h1>
+
+    <div ng-if="isLoading" class="text-muted">Loading user details...</div>
+    <div ng-if="errorMessage" class="alert alert-danger mb-0">
+      {{ errorMessage }}
+    </div>
+
+    <div ng-if="!isLoading && !errorMessage && user" class="row g-3">
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100 bg-light">
+          <div class="small text-muted mb-1">ID</div>
+          <div class="fw-semibold">{{ user.id }}</div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100 bg-light">
+          <div class="small text-muted mb-1">Name</div>
+          <div class="fw-semibold">{{ user.name || user.username || '-' }}</div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100 bg-light">
+          <div class="small text-muted mb-1">Email</div>
+          <div class="fw-semibold">{{ user.email || '-' }}</div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100 bg-light">
+          <div class="small text-muted mb-1">Phone</div>
+          <div class="fw-semibold">{{ user.phone || '-' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

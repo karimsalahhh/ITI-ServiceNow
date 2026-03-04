@@ -1,0 +1,22 @@
+<!doctype html>
+<html ng-app="app">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  </head>
+  <body ng-controller="ctrl">
+    <input ng-model="name">
+    <p>{{name}}</p>
+
+    <button ng-click="change()">Change from controller</button>
+
+    <script>
+      angular.module("app", [])
+        .controller("ctrl", function ($scope) {
+          $scope.name = "Karim";
+          $scope.change = function () {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+            $scope.name = "Sara";
+          };
+        });
+    </script>
+  </body>
+</html>

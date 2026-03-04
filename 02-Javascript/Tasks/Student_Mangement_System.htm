@@ -1,0 +1,95 @@
+<script>
+  const students = [];
+
+  while (true) {
+    const name = prompt("Student name:");
+    const age = Number(prompt("Student age:"));
+
+    const grades = [];
+
+    while (true) {
+      const input = prompt('Enter a grade (0-100) or type "stop":');
+
+      if (input === null || input.toLowerCase() === "stop") {
+        if (grades.length < 3) {
+          alert("You must enter at least 3 grades before stopping.");
+          continue;
+        }
+        break;
+      }
+
+      const g = Number(input);
+
+      if (input === "" || Number.isNaN(g) || g < 0 || g > 100) {
+        alert("Invalid grade. Enter a number between 0 and 100.");
+        continue;
+      }
+
+      grades.push(g);
+    }
+
+    let sum = 0;
+    for (let i = 0; i < grades.length; i++) sum += grades[i];
+
+    const average = sum / grades.length;
+
+    let highest = grades[0];
+    let lowest = grades[0];
+    for (let i = 1; i < grades.length; i++) {
+      if (grades[i] > highest) highest = grades[i];
+      if (grades[i] < lowest) lowest = grades[i];
+    }
+
+    let level = "";
+    if (average >= 90) level = "Excellent";
+    else if (average >= 80) level = "Very Good";
+    else if (average >= 70) level = "Good";
+    else if (average >= 60) level = "Pass";
+    else level = "Fail";
+
+    const status = average >= 60 ? "Passed" : "Failed";
+
+    const student = { name, age, grades, average };
+    students.push(student);
+
+    alert(
+      "Student Report\n" +
+        "Name: " +
+        name +
+        "\n" +
+        "Age: " +
+        age +
+        "\n" +
+        "Grades: " +
+        grades.join(", ") +
+        "\n" +
+        "Total Grades Entered: " +
+        grades.length +
+        "\n" +
+        "Average: " +
+        average +
+        "\n" +
+        "Highest: " +
+        highest +
+        "\n" +
+        "Lowest: " +
+        lowest +
+        "\n" +
+        "Level: " +
+        level +
+        "\n" +
+        "Status: " +
+        status,
+    );
+
+    const again = prompt("Enter another student? (yes/no)");
+    if (!again || again.toLowerCase() !== "yes") break;
+  }
+
+  let summary = "All Students\n";
+  for (let i = 0; i < students.length; i++) {
+    summary +=
+      i + 1 + ") " + students[i].name + " — Avg: " + students[i].average + "\n";
+  }
+  alert(summary);
+</script>

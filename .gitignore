@@ -1,0 +1,9 @@
+.vscode/
+__MACOSX/
+target/
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.log
+.DS_Store

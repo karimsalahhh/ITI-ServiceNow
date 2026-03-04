@@ -1,0 +1,44 @@
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student List</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body ng-controller="mainCtrl">
+    <div>
+      <h1>{{message | lowercase}}</h1>
+      <h2>{{date | date: 'medium'}}</h2>
+      <h2>{{price | number:2 | currency}}</h2>
+      <h2>{{"angularjs" | reverse}}</h2>
+      <h2>{{"angular" | capitalize}}</h2>
+    </div>
+    <script>
+      var app = angular.module("myApp", []);
+
+      app.controller("mainCtrl", function ($scope) {
+        $scope.message = "hello,angular";
+        $scope.date = new Date();
+        $scope.price = 123.45666666;
+      });
+      app.filter("reverse", function () {
+        return function (input) {
+          console.log(input.split("").reverse().join(""));
+          return input.split("").reverse().join("");
+        };
+      });
+      app.filter("capitalize", function () {
+        return function (input) {
+          input = String(input);
+          return input.charAt(0).toUpperCase() + input.slice(1);
+        };
+      });
+    </script>
+  </body>
+</html>

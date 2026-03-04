@@ -1,0 +1,68 @@
+<script>
+  const name = prompt("Student name:");
+  const age = Number(prompt("Student age:"));
+
+  if (!Number.isFinite(age)) {
+    alert("Invalid Age");
+  }
+
+  const grades = [];
+
+  while (true) {
+    const input = prompt('Enter a grade (0-100) or type "stop":');
+    if (input === null || input.toLowerCase() === "stop") break;
+
+    const g = Number(input);
+
+    if (input === "" || !Number.isFinite(g) || g < 0 || g > 100) {
+      alert("Invalid grade. Enter a number between 0 and 100.");
+      continue;
+    }
+
+    grades.push(g);
+  }
+  alert("Done entering grades. Now calculating...");
+
+  const student = { name, age, grades };
+
+  let sum = 0;
+  for (let i = 0; i < grades.length; i++) {
+    sum += grades[i];
+  }
+
+  let average = grades.length ? sum / grades.length : 0;
+
+  let highest = grades[0];
+  let lowest = grades[0];
+
+  for (let i = 1; i < grades.length; i++) {
+    if (grades[i] > highest) highest = grades[i];
+    if (grades[i] < lowest) lowest = grades[i];
+  }
+
+  const status = average >= 60 ? "Passed" : "Failed";
+
+  alert(
+    "Student Report\n" +
+      "Name: " +
+      student.name +
+      "\n" +
+      "Age: " +
+      student.age +
+      "\n" +
+      "Grades: " +
+      student.grades.join(", ") +
+      "\n" +
+      "Average: " +
+      average +
+      "\n" +
+      "Highest: " +
+      highest +
+      "\n" +
+      "Lowest: " +
+      lowest +
+      "\n" +
+      "Status: " +
+      status,
+  );
+</script>
