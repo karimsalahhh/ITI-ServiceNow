@@ -1,0 +1,133 @@
+CREATE TABLE doctors (
+    doctor_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    middle_name VARCHAR(50),
+    last_name VARCHAR(50),
+    specialization VARCHAR(100),
+    qualification VARCHAR(100)
+);
+
+
+CREATE TABLE patients (
+    patient_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    dob DATE,
+    locality VARCHAR(100),
+    city VARCHAR(100),
+    doctor_id INT
+);
+
+
+ALTER TABLE patients
+ADD CONSTRAINT fk_patients_doctor
+FOREIGN KEY (doctor_id)
+REFERENCES doctors(doctor_id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+CREATE TABLE medicines (
+    code INT PRIMARY KEY,
+    medicine_name VARCHAR(100),
+    price NUMERIC(10,2),
+    quantity INT
+);
+
+
+CREATE TABLE patient_medicine (
+    bill_id INT PRIMARY KEY,
+    patient_id INT,
+    medicine_code INT,
+    quantity INT,
+    bill_date DATE
+);
+
+
+ALTER TABLE patient_medicine
+ADD CONSTRAINT fk_pm_patient
+FOREIGN KEY (patient_id)
+REFERENCES patients(patient_id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+ALTER TABLE patient_medicine
+ADD CONSTRAINT fk_pm_medicine
+FOREIGN KEY (medicine_code)
+REFERENCES medicines(code)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+INSERT INTO doctors (doctor_id, first_name, middle_name, last_name, specialization, qualification)
+VALUES
+(1, 'Khaled', 'Mostafa', 'Yassin', 'Orthopedics', 'MBBS'),
+(2, 'Salma', 'Adel', 'Hegazy', 'Pediatrics', 'MD'),
+(3, 'Tamer', 'Hany', 'Fouad', 'Ophthalmology', 'PhD');
+
+
+INSERT INTO patients (patient_id, first_name, last_name, dob, locality, city, doctor_id)
+VALUES
+(101, 'Mariam', 'Ashraf', '1999-04-12', 'Heliopolis', 'Cairo', 1),
+(102, 'Hossam', 'Ragab', '1997-09-18', 'Gleem', 'Alexandria', 2),
+(103, 'Reem', 'Wael', '2003-02-27', 'Mohandessin', 'Giza', 1),
+(104, 'Adham', 'Sherif', '1996-12-05', 'Sidi Gaber', 'Alexandria', 3),
+(105, 'Farah', 'Nader', '2001-06-30', 'Zamalek', 'Cairo', 2);
+
+
+INSERT INTO medicines (code, medicine_name, price, quantity)
+VALUES
+(1001, 'Cataflam', 35.00, 90),
+(1002, 'Augmentin', 62.50, 50),
+(1003, 'Paracetamol', 28.75, 110),
+(1004, 'Omega 3', 85.00, 70),
+(1005, 'Ventolin', 120.00, 45);
+
+
+INSERT INTO patient_medicine (bill_id, patient_id, medicine_code, quantity, bill_date)
+VALUES
+(1, 101, 1003, 1, '2026-04-01'),
+(2, 102, 1002, 2, '2026-04-02'),
+(3, 103, 1001, 1, '2026-04-03'),
+(4, 104, 1005, 1, '2026-04-04'),
+(5, 105, 1004, 3, '2026-04-05');
+
+
+UPDATE medicines
+SET price = price + 10
+WHERE code = 1001;
+
+
+UPDATE patients
+SET doctor_id = 3
+WHERE patient_id = 105;
+
+
+ALTER TABLE doctors
+ADD COLUMN phone_number VARCHAR(20);
+
+
+ALTER TABLE patients
+ADD COLUMN email VARCHAR(100) UNIQUE;
+
+
+UPDATE patients SET email = 'karim.salah@example.com' WHERE patient_id = 101;
+UPDATE patients SET email = 'hossam.ragab@example.com' WHERE patient_id = 102;
+UPDATE patients SET email = 'reem.wael@example.com' WHERE patient_id = 103;
+UPDATE patients SET email = 'adham.sherif@example.com' WHERE patient_id = 104;
+UPDATE patients SET email = 'farah.nader@example.com' WHERE patient_id = 105;
+
+
+ALTER TABLE medicines
+ADD CONSTRAINT chk_medicines_price
+CHECK (price >= 0);
+
+
+UPDATE doctors
+SET doctor_id = 10
+WHERE doctor_id = 1;
+
+SELECT * FROM doctors;
+SELECT * FROM patients;
+SELECT * FROM medicines;
+SELECT * FROM patient_medicine;

@@ -1,0 +1,38 @@
+CREATE TABLE categories(
+category_id SERIAL PRIMARY KEY,
+category_name VARCHAR(50) NOT NULL UNIQUE,
+description TEXT,
+is_active BOOLEAN DEFAULT TRUE,
+created_at TIMESTAMPTZ DEFAULT NOW() 
+);
+
+
+CREATE TABLE books (
+book_id SERIAL PRIMARY KEY,
+category_id INTEGER NOT NULL UNIQUE,
+book_name VARCHAR(50) NOT NULL,
+description TEXT,
+price NUMERIC(10,2) NOT NULL CHECK(price >= 0),
+pages INTEGER NOT NULL CHECK (pages > 0),
+published_date DATE DEFAULT CURRENT_DATE,
+in_stock BOOLEAN DEFAULT TRUE,
+added_at TIMESTAMPTZ DEFAULT NOW(),
+extra_info JSONB,
+
+CONSTRAINT fk_category
+FOREIGN KEY (category_id)
+REFERENCES categories(category_id)
+);
+
+
+INSERT INTO categories (category_name,description,is_active)
+VALUES
+('Love','Love stories that go back in time',TRUE);
+
+SELECT*FROM categories
+
+ALTER TABLE categories 
+RENAME COLUMN description TO description1
+
+
+
