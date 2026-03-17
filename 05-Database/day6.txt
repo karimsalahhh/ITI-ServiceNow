@@ -1,0 +1,148 @@
+
+WITH avg_salary_cte AS (
+    SELECT
+        dept_id,
+        AVG(salary) AS avg_salary
+    FROM Employee
+    GROUP BY dept_id
+)
+SELECT
+    d.dept_name,
+    a.avg_salary
+FROM avg_salary_cte a
+JOIN Department d
+    ON d.dept_id = a.dept_id
+WHERE a.avg_salary > 4000;
+
+SELECT emp_name
+FROM Employee
+
+EXCEPT
+
+SELECT e.emp_name
+FROM Employee e
+JOIN Department d
+    ON d.dept_id = e.dept_id
+WHERE d.dept_name = 'IT';
+
+
+SELECT e.emp_name
+FROM Employee e
+JOIN (
+    SELECT w.emp_id
+    FROM Works_On w
+    JOIN Project p
+        ON p.project_id = w.project_id
+    WHERE p.project_name = 'Sales'
+
+    INTERSECT
+
+    SELECT w.emp_id
+    FROM Works_On w
+    JOIN Project p
+        ON p.project_id = w.project_id
+    WHERE p.project_name = 'Marketing'
+) sub
+    ON e.emp_id = sub.emp_id;
+
+
+BEGIN;
+
+UPDATE Employee
+SET salary = 6000
+WHERE emp_id = 5;
+
+UPDATE Employee
+SET dept_id = 3
+WHERE emp_id = 5;
+
+COMMIT;
+
+-- If an error happens while running manually, use:
+-- ROLLBACK;
+
+SELECT e.emp_name
+FROM Employee e
+JOIN Department d
+    ON d.dept_id = e.dept_id
+WHERE d.dept_name = 'Sales';
+
+
+DROP TABLE IF EXISTS Task;
+
+CREATE TABLE Task (
+    task_id SERIAL PRIMARY KEY,
+    task_name VARCHAR(100),
+    emp_id INT,
+    priority VARCHAR(20),
+    status VARCHAR(20),
+    due_date DATE,
+    FOREIGN KEY (emp_id) REFERENCES Employee(emp_id)
+);
+
+
+INSERT INTO Task (task_name, emp_id, priority, status, due_date) VALUES
+('Fix login bug', 101, 'High', 'In Progress', CURRENT_DATE),
+('Prepare report', 102, 'Medium', 'Completed', CURRENT_DATE - 2),
+('Update website', 103, 'High', 'Pending', CURRENT_DATE + 1),
+('Check database', 101, 'Low', 'Completed', CURRENT_DATE - 1),
+('Team meeting', 104, 'High', 'Pending', CURRENT_DATE),
+('Deploy app', 105, 'Medium', 'In Progress', CURRENT_DATE + 3),
+('Write documentation', 107, 'High', 'Completed', CURRENT_DATE - 4),
+('Fix API', 101, 'High', 'Pending', CURRENT_DATE + 2),
+('Review code', 102, 'Low', 'Pending', CURRENT_DATE + 4);
+
+
+SELECT DISTINCT e.emp_name
+FROM Employee e
+JOIN Task t
+    ON e.emp_id = t.emp_id
+WHERE t.priority = 'High';
+
+
+SELECT DISTINCT e.emp_name
+FROM Employee e
+JOIN Task t
+    ON e.emp_id = t.emp_id
+WHERE t.due_date = CURRENT_DATE;
+
+SELECT e.emp_name
+FROM Employee e
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Task t
+    WHERE t.emp_id = e.emp_id
+      AND t.status = 'Completed'
+);
+
+
+SELECT
+    e.emp_name,
+    COUNT(t.task_id) AS total_tasks
+FROM Employee e
+JOIN Task t
+    ON e.emp_id = t.emp_id
+GROUP BY e.emp_name
+HAVING COUNT(t.task_id) > 2;
+
+-
+SELECT *
+FROM Task
+WHERE due_date > (
+    SELECT MAX(due_date)
+    FROM Task
+    WHERE status = 'Completed'
+);
+
+
+SELECT DISTINCT e.emp_name
+FROM Employee e
+JOIN Task t
+    ON e.emp_id = t.emp_id
+WHERE t.priority = 'High';
+
+SELECT DISTINCT e.emp_name
+FROM Employee e
+JOIN Task t
+    ON e.emp_id = t.emp_id
+WHERE t.status = 'Completed';

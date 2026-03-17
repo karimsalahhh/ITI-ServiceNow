@@ -1,0 +1,92 @@
+
+SELECT DISTINCT ON (e.dept_id)
+    d.dept_name,
+    e.emp_name,
+    e.hire_date
+FROM Employee e
+JOIN Department d
+    ON d.dept_id = e.dept_id
+ORDER BY e.dept_id, e.hire_date DESC;
+
+
+SELECT emp_name, dept_name
+FROM Employee
+NATURAL JOIN Department;
+
+
+SELECT
+    p.project_name,
+    p.budget,
+    COUNT(w.emp_id) AS employee_count
+FROM Project p
+LEFT JOIN Works_On w
+    ON p.project_id = w.project_id
+GROUP BY p.project_id, p.project_name, p.budget
+ORDER BY employee_count DESC;
+
+SELECT
+    e1.emp_name AS employee_1,
+    e2.emp_name AS employee_2,
+    e1.salary
+FROM Employee e1
+JOIN Employee e2
+    ON e1.salary = e2.salary
+WHERE e1.emp_id < e2.emp_id;
+
+SELECT
+    p.project_name,
+    e.emp_name
+FROM Project p
+JOIN Works_On w
+    ON p.project_id = w.project_id
+JOIN Employee e
+    ON e.emp_id = w.emp_id
+ORDER BY p.project_name, e.emp_name;
+
+
+SELECT emp_name AS name
+FROM Employee
+
+UNION
+
+SELECT dept_name AS name
+FROM Department;
+
+
+SELECT DISTINCT ON (d.dept_id)
+    d.dept_name,
+    e.emp_name
+FROM Department d
+JOIN Employee e
+    ON d.dept_id = e.dept_id
+ORDER BY d.dept_id, e.emp_id;
+
+
+SELECT
+    d.dept_name,
+    (
+        SELECT AVG(e.salary)
+        FROM Employee e
+        WHERE e.dept_id = d.dept_id
+    ) AS avg_salary
+FROM Department d;
+
+SELECT
+    e1.emp_name AS employee_1,
+    e2.emp_name AS employee_2,
+    e1.hire_date
+FROM Employee e1
+JOIN Employee e2
+    ON e1.hire_date = e2.hire_date
+WHERE e1.emp_id < e2.emp_id;
+
+
+SELECT
+    emp_name,
+    salary
+FROM Employee
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM Employee
+)
+ORDER BY salary DESC;

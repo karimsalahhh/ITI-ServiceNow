@@ -1,0 +1,262 @@
+CREATE TABLE Doctor (
+    Doctor_id INT PRIMARY KEY,
+    Specialization VARCHAR(100),
+    Qualification VARCHAR(100),
+    Name_First VARCHAR(50),
+    Name_Middle VARCHAR(50),
+    Name_Last VARCHAR(50),
+    Salary INT
+);
+
+CREATE TABLE Patient (
+    Patient_id INT PRIMARY KEY,
+    Name_First VARCHAR(50),
+    DOB DATE,
+    Address_Locality VARCHAR(100),
+    Address_City VARCHAR(100),
+    Phone VARCHAR(20)
+);
+
+CREATE TABLE Medicine (
+    Code VARCHAR(10) PRIMARY KEY,
+    Price NUMERIC(10,2),
+    Quantity INT
+);
+
+CREATE TABLE Doctor_Treats_Patient (
+    Doctor_id INT,
+    Patient_id INT,
+    PRIMARY KEY (Doctor_id, Patient_id),
+    CONSTRAINT fk_dtp_doctor
+        FOREIGN KEY (Doctor_id)
+        REFERENCES Doctor(Doctor_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_dtp_patient
+        FOREIGN KEY (Patient_id)
+        REFERENCES Patient(Patient_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE Patient_Bills_Medicine (
+    Patient_id INT,
+    Medicine_Code VARCHAR(10),
+    Quantity INT,
+    PRIMARY KEY (Patient_id, Medicine_Code),
+    CONSTRAINT fk_pbm_patient
+        FOREIGN KEY (Patient_id)
+        REFERENCES Patient(Patient_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_pbm_medicine
+        FOREIGN KEY (Medicine_Code)
+        REFERENCES Medicine(Code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+
+
+
+INSERT INTO Doctor (Doctor_id, Specialization, Qualification, Name_First, Name_Middle, Name_Last)
+VALUES
+(1, 'Cardiology', 'MD', 'Ahmed', 'Ali', 'Hassan'),
+(2, 'Neurology', 'PhD', 'Mona', 'Mohamed', 'Fahmy'),
+(3, 'Orthopedics', 'MBBS', 'Khaled', NULL, 'Saeed'),
+(4, 'Pediatrics', 'MD', 'Sara', 'Ahmed', 'Nabil'),
+(5, 'Dermatology', 'MD', 'Omar', 'Hassan', 'Farouk');
+
+INSERT INTO Patient (Patient_id, DOB, Address_Locality, Address_City)
+VALUES
+(101, '1990-05-12', 'Heliopolis', 'Cairo'),
+(102, '1985-11-23', 'Zamalek', 'Cairo'),
+(103, '2000-01-30', 'Nasr City', 'Cairo'),
+(104, '2010-07-15', 'Maadi', 'Cairo'),
+(105, '1975-09-10', 'Dokki', 'Giza');
+
+INSERT INTO Medicine (Code, Price, Quantity)
+VALUES
+('M001', 150.50, 20),
+('M002', 75.00, 50),
+('M003', 300.25, 10),
+('M004', 120.00, 30),
+('M005', 50.75, 100);
+
+INSERT INTO Doctor_Treats_Patient (Doctor_id, Patient_id)
+VALUES
+(1, 101),
+(1, 102),
+(2, 103),
+(3, 104),
+(4, 105),
+(2, 101);
+
+INSERT INTO Patient_Bills_Medicine (Patient_id, Medicine_Code, Quantity)
+VALUES
+(101, 'M001', 2),
+(101, 'M002', 1),
+(102, 'M003', 1),
+(103, 'M002', 3),
+(104, 'M004', 2),
+(105, 'M005', 5);
+
+
+UPDATE Doctor SET Salary = 18000 WHERE Doctor_id = 1;
+UPDATE Doctor SET Salary = 15000 WHERE Doctor_id = 2;
+UPDATE Doctor SET Salary = 12000 WHERE Doctor_id = 3;
+UPDATE Doctor SET Salary = 9000  WHERE Doctor_id = 4;
+UPDATE Doctor SET Salary = 20000 WHERE Doctor_id = 5;
+
+UPDATE Patient SET Name_First = 'Mariam' WHERE Patient_id = 101;
+UPDATE Patient SET Name_First = 'Hossam' WHERE Patient_id = 102;
+UPDATE Patient SET Name_First = 'Mona'   WHERE Patient_id = 103;
+UPDATE Patient SET Name_First = 'Adham'  WHERE Patient_id = 104;
+UPDATE Patient SET Name_First = 'Farah'  WHERE Patient_id = 105;
+
+UPDATE Patient SET Phone = ' 01011111111 ' WHERE Patient_id = 101;
+UPDATE Patient SET Phone = ' 01022222222 ' WHERE Patient_id = 102;
+UPDATE Patient SET Phone = ' 01033333333 ' WHERE Patient_id = 103;
+
+DELETE FROM Patient
+WHERE Patient_id = 105;
+
+
+SELECT *
+FROM Doctor
+WHERE Specialization = 'Cardiology'
+  AND Salary > 12000;
+
+
+SELECT *
+FROM Patient
+WHERE Name_First LIKE 'M%';
+
+
+SELECT *
+FROM Doctor
+WHERE Salary BETWEEN 10000 AND 20000;
+
+SELECT *
+FROM Doctor
+WHERE Specialization IN ('Cardiology', 'Dermatology');
+
+
+SELECT *
+FROM Doctor
+WHERE Specialization <> 'Neurology';
+
+SELECT *
+FROM Patient
+WHERE Phone IS NULL;
+
+SELECT
+    Name_First,
+    Name_Last,
+    Salary,
+    CASE
+        WHEN Salary > 15000 THEN 'High Salary'
+        ELSE 'Normal Salary'
+    END AS salary_status
+FROM Doctor;
+
+
+SELECT P.*
+FROM Patient P
+JOIN Doctor_Treats_Patient DTP
+    ON P.Patient_id = DTP.Patient_id
+WHERE DTP.Doctor_id = 1;
+
+CREATE TABLE high_salary_doctors AS
+SELECT *
+FROM Doctor
+WHERE Salary > 15000;
+
+SELECT DISTINCT D.*
+FROM Doctor D
+JOIN Doctor_Treats_Patient DTP
+    ON D.Doctor_id = DTP.Doctor_id;
+
+
+SELECT Name_First, Name_Last, Specialization, Salary
+FROM Doctor
+WHERE Salary > ANY (
+    SELECT Salary
+    FROM Doctor
+    WHERE Specialization = 'Cardiology'
+);
+
+
+SELECT *
+FROM Patient
+WHERE Name_First SIMILAR TO '(A|M)%';
+
+SELECT DISTINCT Specialization
+FROM Doctor;
+
+-- 15) Display patient name and age calculated from DOB.
+SELECT
+    Name_First,
+    AGE(DOB) AS full_age,
+    EXTRACT(YEAR FROM AGE(DOB)) AS age_years
+FROM Patient;
+
+
+SELECT
+    Name_First,
+    UPPER(Name_First) AS upper_name,
+    LOWER(Name_First) AS lower_name,
+    INITCAP(LOWER(Name_First)) AS proper_name
+FROM Patient;
+
+
+SELECT
+    Phone AS original_phone,
+    TRIM(Phone) AS trimmed_phone,
+    LTRIM(Phone) AS left_trimmed_phone,
+    RTRIM(Phone) AS right_trimmed_phone
+FROM Patient;
+
+
+SELECT
+    Patient_id,
+    CONCAT(Name_First, ' - Phone: ', Phone) AS contact_info
+FROM Patient;
+
+SELECT
+    Name_First,
+    SUBSTRING(Name_First FROM 1 FOR 3) AS first_3_letters,
+    POSITION('a' IN LOWER(Name_First)) AS position_of_a
+FROM Patient;
+
+SELECT
+    Name_First AS original_name,
+    REPLACE(Name_First, 'Ahmed', 'Ahmad') AS updated_name
+FROM Doctor;
+
+SELECT
+    Name_First,
+    Salary AS original_salary,
+    CAST(Salary AS INTEGER) AS salary_as_integer,
+    CAST(Salary AS TEXT) AS salary_as_text
+FROM Doctor;
+
+
+SELECT * FROM Doctor;
+SELECT * FROM Patient;
+SELECT * FROM Medicine;
+SELECT * FROM Doctor_Treats_Patient;
+SELECT * FROM Patient_Bills_Medicine;
+SELECT * FROM high_salary_doctors;
+
+
+
+
+
+
+
+
+
+
+
+
