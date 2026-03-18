@@ -1,0 +1,184 @@
+DROP TABLE IF EXISTS tasks CASCADE;
+
+CREATE TABLE tasks (
+    task_id SERIAL PRIMARY KEY,
+    task_name VARCHAR(100),
+    emp_id INT,
+    priority VARCHAR(20),
+    status VARCHAR(20),
+    due_date DATE
+);
+
+INSERT INTO tasks (task_name, emp_id, priority, status, due_date) VALUES
+('Fix login bug', 101, 'High', 'In Progress', CURRENT_DATE),
+('Prepare report', 102, 'Medium', 'Completed', CURRENT_DATE - 2),
+('Update website', 103, 'High', 'Pending', CURRENT_DATE + 1),
+('Check database', 101, 'Low', 'Completed', CURRENT_DATE - 1),
+('Team meeting', 104, 'High', 'Pending', CURRENT_DATE),
+('Deploy app', 105, 'Medium', 'In Progress', CURRENT_DATE + 3),
+('Write documentation', 107, 'High', 'Completed', CURRENT_DATE - 4),
+('Fix API', 101, 'High', 'Pending', CURRENT_DATE + 2),
+('Review code', 102, 'Low', 'Pending', CURRENT_DATE + 4);
+
+SELECT
+    e.emp_name,
+    t.task_name,
+    t.due_date,
+    ROW_NUMBER() OVER (
+        PARTITION BY t.emp_id
+        ORDER BY t.due_date
+    ) AS row_num
+FROM tasks t
+JOIN Employee e
+    ON e.emp_id = t.emp_id;
+
+SELECT
+    emp_name,
+    salary,
+    DENSE_RANK() OVER (
+        ORDER BY salary DESC
+    ) AS salary_rank
+FROM Employee;
+
+SELECT
+    emp_name,
+    task_name,
+    due_date
+FROM (
+    SELECT
+        e.emp_name,
+        t.task_name,
+        t.due_date,
+        ROW_NUMBER() OVER (
+            PARTITION BY t.emp_id
+            ORDER BY t.due_date DESC
+        ) AS latest_task_rank
+    FROM tasks t
+    JOIN Employee e
+        ON e.emp_id = t.emp_id
+) sub
+WHERE latest_task_rank = 1;
+
+SELECT
+    e.emp_name,
+    d.dept_name,
+    ROUND(
+        AVG(e.salary) OVER (PARTITION BY e.dept_id),
+        2
+    ) AS avg_department_salary
+FROM Employee e
+JOIN Department d
+    ON d.dept_id = e.dept_id;
+
+SELECT
+    e.emp_name,
+    t.task_name,
+    t.due_date,
+    COUNT(t.task_id) OVER (
+        PARTITION BY t.emp_id
+        ORDER BY t.due_date
+    ) AS running_task_count
+FROM tasks t
+JOIN Employee e
+    ON e.emp_id = t.emp_id;
+
+SELECT
+    emp_name,
+    salary,
+    DENSE_RANK() OVER (
+        ORDER BY salary DESC
+    ) AS salary_rank
+FROM Employee;
+
+WITH task_counts AS (
+    SELECT
+        e.emp_id,
+        e.emp_name,
+        COUNT(t.task_id) AS task_count
+    FROM Employee e
+    JOIN tasks t
+        ON e.emp_id = t.emp_id
+    GROUP BY e.emp_id, e.emp_name
+)
+SELECT
+    emp_name,
+    task_count
+FROM task_counts
+WHERE task_count > (
+    SELECT AVG(task_count)
+    FROM task_counts
+);
+
+SELECT
+    task_name,
+    priority,
+    DENSE_RANK() OVER (
+        ORDER BY
+            CASE
+                WHEN priority = 'High' THEN 1
+                WHEN priority = 'Medium' THEN 2
+                WHEN priority = 'Low' THEN 3
+            END
+    ) AS priority_rank
+FROM tasks;
+
+WITH task_counts AS (
+    SELECT
+        e.emp_id,
+        e.emp_name,
+        COUNT(t.task_id) AS task_count
+    FROM Employee e
+    JOIN tasks t
+        ON e.emp_id = t.emp_id
+    GROUP BY e.emp_id, e.emp_name
+)
+SELECT
+    emp_name,
+    task_count
+FROM (
+    SELECT
+        emp_name,
+        task_count,
+        DENSE_RANK() OVER (
+            ORDER BY task_count DESC
+        ) AS task_rank
+    FROM task_counts
+) sub
+WHERE task_rank = 1;
+
+ALTER TABLE Employee
+ADD COLUMN IF NOT EXISTS manager_id INT;
+
+ALTER TABLE Employee
+ADD CONSTRAINT fk_manager
+FOREIGN KEY (manager_id)
+REFERENCES Employee(emp_id);
+
+UPDATE Employee
+SET manager_id = 103
+WHERE emp_id IN (101, 102);
+
+UPDATE Employee
+SET manager_id = 104
+WHERE emp_id = 105;
+
+WITH task_counts AS (
+    SELECT
+        e.emp_id,
+        e.manager_id,
+        e.emp_name,
+        COUNT(t.task_id) AS task_count
+    FROM Employee e
+    LEFT JOIN tasks t
+        ON e.emp_id = t.emp_id
+    GROUP BY e.emp_id, e.manager_id, e.emp_name
+)
+SELECT
+    e1.emp_name AS employee_name,
+    e1.task_count AS employee_tasks,
+    e2.emp_name AS manager_name,
+    e2.task_count AS manager_tasks
+FROM task_counts e1
+JOIN task_counts e2
+    ON e1.manager_id = e2.emp_id
+WHERE e1.task_count > e2.task_count;
